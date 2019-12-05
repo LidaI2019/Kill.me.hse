@@ -1,6 +1,6 @@
 from flask import Flask
 
-from models import db, Employee, Position
+from models import db, Car, Doorcount
 from routse import api, index
 
 app = Flask(__name__)
@@ -9,13 +9,13 @@ app.register_blueprint(index)
 db.init_app(app)
 with app.app_context():
     db.create_all()
-    manager = Position(name='Manager')
-    developer = Position(name='Developer')
-    db.session.add(manager)
-    db.session.add(developer)
+    doors_5 = Doorcount(name='5doors')
+    doors_4 = Doorcount(name='4doors')
+    db.session.add(doors_5)
+    db.session.add(doors_4)
     db.session.commit()
-    db.session.add(Employee(name='Bob', surname='I', age=29, position_id=manager.id))
-    db.session.add(Employee(name='Rocky', surname='Y', age=19, position_id=developer.id))
+    db.session.add(Car(horsepower='248', torque='273', cargo_volume=24, doorcount_id=doors_5.id))
+    db.session.add(Car(horsepower='247', torque='256', cargo_volume=25, doorcount_id=doors_4.id))
     db.session.commit()
 
 

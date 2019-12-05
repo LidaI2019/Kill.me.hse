@@ -4,21 +4,20 @@ from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
-class Employee(db.Model):
-    __tablename__ = 'employee'
+class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    surname = db.Column(db.String(120))
-    age = db.Column(db.Integer)
-    position_id = db.Column(db.Integer, ForeignKey('Position.id'))
-    position = relationship('Position')
+    horsepower = db.Column(db.Integer)
+    torque = db.Column(db.Integer)
+    cargo_volume = db.Column(db.Integer)
+    doorcount_id = db.Column(db.Integer, ForeignKey('Doorcount.id'))
+    doorcount = relationship ('Doorcount')
 
     def json(self):
-        return {"id": self.id, "name": self.name, "surname": self.surname, "age": self.age, "position": self.position.json()}
+        return {"id": self.id, "horsepower": self.horsepower, "torque": self.torque, "cargo_volume": self.cargo_volume, "doorcount": self.doorcount.json()}
 
-class Position(db.Model):
-    __tablename__ = 'Position'
+class Doorcount(db.Model):
+    __tablename__ = 'Doorcount'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
     def json(self):
-        return {"id":self.id, "name": self.name}
+        return {"id":self.id,"name":self.name}

@@ -1,26 +1,26 @@
 from flask import Blueprint, jsonify
 
-from models import Employee, db
+from models import db, Car
 
 index = Blueprint('index', __name__, url_prefix='/')
 api = Blueprint('api', __name__, url_prefix='/api')
 
+@api.route('/cars')
+def get_cars():
+    return jsonify([(lambda car: car.json()) (car) for car in Car.query.all()])
 
-@api.route('/mens')
-def get_mens():
-    return jsonify([(lambda men: men.json()) (men) for men in Employee.query.all()])
+@api.route('/car/id/<int:car_id>')
+def get_car(car_id):
+    car = Car.query.get (car_id)
+    return jsonify(car.json()) if car else ''
 
-@api.route('/men/id/<int:men_id>')
-def get_men(men_id):
-    men = Employee.query.get (men_id)
-    return jsonify(men.json()) if men else ''
-
-@api.route('/men/add/name=<string:men_name>;surname=<string:men_surname>;age=<string:men_age>')
-def put_men(men_name, men_surname, men_age):
-    men = Employee(name=men_name, surname=men_surname, age=men_age)
-    db.session.add(men)
+@api.route('/car/add/horsepower=<string:car_horsepower>;torque=<string:car_torque>;cargo_volume=<string:car_cargo_volume>;doorcount_id=<int:doorcount_id>')
+def put_car(car_horsepower, car_torque, car_cargo_volume, doorcount_id):
+    car = Car(horsepower=car_horsepower, torque=car_torque, cargo_volume=car_cargo_volume, doorcount_id=doorcount_id)
+    db.session.add(car)
     db.session.commit()
-    return jsonify(men.json())
+    return jsonify(car.json())
+
 @index.route('/')
 @index.route('/index')
 def get_index():
@@ -31,7 +31,7 @@ def get_index():
        </title>
        <body>
            <h3>API:</h3>
-           <a href="./api/mens">Mens</a>
+           <a href="./api/cars">Cars</a>
        </body>
     </html>
           '''

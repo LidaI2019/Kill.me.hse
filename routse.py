@@ -23,7 +23,7 @@ def put_men(men_name, men_surname, men_age):
     return jsonify(men.json())
 @index.route('/')
 @index.route('/index')
-def index():
+def get_index():
     return'''
     <html>
        <title>

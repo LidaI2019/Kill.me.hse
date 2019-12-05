@@ -14,9 +14,9 @@ def get_men(men_id):
     men = Men.query.get (men_id)
     return jsonify(men.json()) if men else ''
 
-@api.route('/men/name/<string:men_name>')
-def put_men(men_name):
-    men = Men(name=men_name)
+@api.route('/men/add/name=<string:men_name>;surname=<string:men_surname>;age=<string:men_age>')
+def put_men(men_name, men_surname, men_age):
+    men = Men(name=men_name, surname=men_surname, age=men_age)
     db.session.add(men)
     db.session.commit()
     return jsonify(men.json())

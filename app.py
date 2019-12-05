@@ -8,8 +8,8 @@ app.register_blueprint(api)
 db.init_app(app)
 with app.app_context():
     db.create_all()
-    db.session.add(Men(name='Bob'))
-    db.session.add(Men(name='Rocky'))
+    db.session.add(Men(name='Bob', surname='I', age=29))
+    db.session.add(Men(name='Rocky', surname='Y', age=19))
     db.session.commit()
 
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-from models import db, Car
+from models import db, Car, Doorcount
 
 index = Blueprint('index', __name__, url_prefix='/')
 api = Blueprint('api', __name__, url_prefix='/api')
@@ -35,4 +35,20 @@ def get_index():
        </body>
     </html>
           '''
+
+@api.route('/doorcounts')
+def get_doorcounts():
+    return jsonify([(lambda doorcount: doorcount.json()) (doorcount) for doorcount in Doorcount.query.all()])
+
+@api.route('/doorcount/id/<int:doorcount_id>')
+def get_doorcount(doorcount_id):
+    doorcount = Doorcount.query.get (doorcount_id)
+    return jsonify(doorcount.json()) if doorcount else ''
+
+@api.route('/doorcount/add/name=<string:doorcount_name>')
+def put_doorcount(doorcount_name):
+    doorcount = Doorcount(name=doorcount_name)
+    db.session.add(doorcount)
+    db.session.commit()
+    return jsonify(doorcount.json())
 
